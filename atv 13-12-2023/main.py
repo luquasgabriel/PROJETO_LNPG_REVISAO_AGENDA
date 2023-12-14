@@ -8,9 +8,9 @@ main = Tk()
 main.title("agenda")
 main.resizable(0, 0)
 width = 400
-height = 300
+height = 500
 posx = main.winfo_screenwidth()/2 - (400/2)
-posy = main.winfo_screenheight()/2 - (300/2)
+posy = main.winfo_screenheight()/2 - (500/2)
 main.geometry("%dx%d+%d+%d" %(width, height, posx, posy))
 
 okay = ""
@@ -18,22 +18,6 @@ okay = ""
 def salva_contato():
     file = open(path, 'a', encoding='utf-8')
     file.write(nomecaixa.get()+","+emailcaixa.get()+","+telefonecaixa.get()+"\n")
-
-
-
-def mostra_contatos():
-    global nomecaixa_
-    contatos.delete(0,tk.END)
-    with open(path, 'r', encoding='utf-8') as listadecontatos:
-        for contato in listadecontatos:
-            info = contato.strip().split("|")
-            contato = map(str.strip, info)
-
-            contatos.insert(tk.END, contato) 
-
-
-
-
 
 
 def verifica_campo():
@@ -90,11 +74,6 @@ telefonecaixa = Entry(main,
 )
 telefonecaixa.pack()
 
-Btn = Button(main, text= "Salvar contato", command=verifica_campo)
-Btn.bind("<Button-1>", mostra_contatos)
-Btn.pack()
-
-
 ok = Label(main, text = okay)
 ok.pack()
 
@@ -103,5 +82,19 @@ placeholder.pack()
 
 contatos=Listbox(main)
 contatos.pack()
+
+def mostra_contatos(self):
+    global contatos
+    contatos.delete(0,tk.END)
+
+    with open(path, 'r', encoding='utf-8') as listadecontatos:
+        for buscacontato in listadecontatos:
+            contatos.insert(tk.END, buscacontato)
+
+mostra_contatos(self=1)
+
+Btn = Button(main, text= "Salvar contato", command=verifica_campo)
+Btn.bind("<Button-1>", mostra_contatos)
+Btn.pack()
 
 main.mainloop()
